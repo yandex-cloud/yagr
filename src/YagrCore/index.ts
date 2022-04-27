@@ -852,6 +852,10 @@ class Yagr<TConfig extends MinimalValidConfig = MinimalValidConfig> {
             useFullyRedraw = true;
         }
 
+        if (series.some((s) => s.type)) {
+            useFullyRedraw = true;
+        }
+
         const updateFns: (() => void)[] = [];
 
         if (useFullyRedraw === false) {
@@ -859,21 +863,24 @@ class Yagr<TConfig extends MinimalValidConfig = MinimalValidConfig> {
 
             useIncremental && this.config.timeline.push(...timeline);
             series.forEach((serie) => {
-                let matched =
-                    typeof updateId === 'number'
-                        ? this.config.series[0]
-                        : this.config.series.find(({id}) => id === serie.id || id === updateId);
+                let matched, seriesIdx: number | undefined;
 
-                let id: number | string | undefined = matched?.id;
-
-                if (typeof updateId === 'number' && this._y2uIdx[updateId]) {
+                if (typeof updateId === 'number') {
                     matched = this.config.series[updateId];
-                    id = updateId;
+                    seriesIdx = this.config.series.length - updateId;
+                } else {
+                    matched = this.config.series.find(({id}) => id === serie.id || id === updateId);
+                    seriesIdx = matched?.id ? this._y2uIdx[matched.id] : undefined;
                 }
 
-                if (matched && id) {
+                if (seriesIdx === undefined) {
+                    return;
+                }
+
+                const sIdx: number = seriesIdx;
+
+                if (matched) {
                     const {data, ...rest} = serie;
-                    const seriesIdx = this._y2uIdx[id];
 
                     if (useIncremental) {
                         matched.data = data ? matched.data.concat(data) : matched.data;
@@ -888,13 +895,13 @@ class Yagr<TConfig extends MinimalValidConfig = MinimalValidConfig> {
 
                     if (uOpts.show !== newSeries.show) {
                         updateFns.push(() => {
-                            this.uplot.setSeries(seriesIdx, {show: newSeries.show});
+                            this.uplot.setSeries(sIdx, {show: newSeries.show});
                         });
                     }
 
                     if (uOpts._focus === null ? true : uOpts._focus !== newSeries.focus) {
                         updateFns.push(() => {
-                            this.uplot.setSeries(seriesIdx, {focus: newSeries.focus});
+                            this.uplot.setSeries(sIdx, {focus: newSeries.focus});
                         });
                     }
 

@@ -120,6 +120,9 @@ export default function YagrMarkersPlugin(yagr: Yagr, config: YagrConfig): Plugi
         },
 
         hooks: {
+            drawSeries: (u) => {
+                u.series.forEach((s, i) => markSeries(i, s));
+            },
             addSeries: (uplot, seriesIdx) => {
                 const series = uplot.series[seriesIdx];
                 markSeries(seriesIdx, series);

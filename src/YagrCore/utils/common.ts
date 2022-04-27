@@ -373,7 +373,10 @@ export function debounce<T extends Array<unknown> = []>(func: (...args: T) => vo
 export const assignKeys = <T>(keys: (keyof T)[], f: T, t: T) => {
     keys.forEach((key) => {
         if (t[key] !== undefined) {
-            f[key] = t[key];
+            if (typeof t[key] === 'object' && !Array.isArray(t[key])) {
+                Object.assign(f[key], t[key]);
+            } else {
+            }
         }
     });
 };

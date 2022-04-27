@@ -51,7 +51,7 @@ export function configureSeries(yagr: Yagr, rawSeries: RawSerieData, idx: number
     if (serie.type === 'column') {
         serie.stroke = colorFn;
         serie.fill = colorFn;
-        serie.points.show = false;
+        serie.points.show = () => false;
     }
 
     if (serie.type === 'dots') {
@@ -72,4 +72,15 @@ export function configureSeries(yagr: Yagr, rawSeries: RawSerieData, idx: number
     return serie;
 }
 
-export const UPDATE_KEYS: (keyof Series)[] = ['width', 'pointsSize', 'color', 'lineColor', 'lineWidth', '$c'];
+export const UPDATE_KEYS: (keyof Series)[] = [
+    'width',
+    'pointsSize',
+    'fill',
+    'color',
+    'lineColor',
+    'lineWidth',
+    '$c',
+    'type',
+    'formatter',
+    'interpolation',
+];
