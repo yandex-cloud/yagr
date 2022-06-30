@@ -4,7 +4,7 @@ import UPlot, {Plugin, Series} from 'uplot';
 import {DEFAULT_X_SCALE, DEFAULT_Y_SCALE, DEFAULT_POINT_SIZE} from '../../defaults';
 import {DotsSeriesOptions, YagrConfig} from '../../types';
 
-const renderCircle = (
+export const renderCircle = (
     u: UPlot,
     x: number,
     y: number,

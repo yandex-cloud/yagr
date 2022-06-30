@@ -32,6 +32,7 @@ export interface TooltipRenderOptions {
     x: number;
     pinned: boolean;
     yagr: Yagr;
+    defaultRender: TooltipOptions['render'];
 }
 
 export type TitleRenderer = string | ((data: TooltipRenderOptions) => string);

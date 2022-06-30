@@ -10,7 +10,7 @@ import {DataSeries, ProcessingInterpolation, YagrPlugin} from '../../types';
 
 import {TOOLTIP_Y_OFFSET, TOOLTIP_X_OFFSET, TOOLTIP_DEFAULT_MAX_LINES, DEFAULT_Y_SCALE} from '../../defaults';
 
-import {findInRange, findDataIdx, findSticky} from '../../utils/common';
+import {findInRange, findDataIdx, findSticky, px} from '../../utils/common';
 import {TooltipOptions, TooltipRow, TrackingOptions, ValueFormatter, TooltipSection, TooltipHandler} from './types';
 
 import {renderTooltip} from './render';
@@ -252,8 +252,8 @@ function YagrTooltipPlugin(yagr: Yagr, options: Partial<TooltipOptions> = {}): R
             }
 
             tOverlay.classList.add('yagr-tooltip_pinned');
-            if (list) {
-                list.style.height = list?.clientHeight + 'px';
+            if (list && list?.clientHeight) {
+                list.style.height = px(list.clientHeight);
             }
 
             if (opts.render === renderTooltip) {
@@ -456,6 +456,7 @@ function YagrTooltipPlugin(yagr: Yagr, options: Partial<TooltipOptions> = {}): R
                 x,
                 pinned: state.pinned,
                 yagr,
+                defaultRender: DEFAULT_TOOLTIP_OPTIONS.render,
             });
 
             placement(tOverlay, anchor, 'right', {

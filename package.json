@@ -34,7 +34,9 @@
     "prebuild": "rimraf dist",
     "copy:scss": "copyfiles -u 1 \"./src/**/*.scss\" dist",
     "build:tsc": "tsc -p tsconfig.json && npm run copy:scss",
-    "build": "rm -rf dist && npm run build:tsc && rollup -c rollup.config.ts",
+    "build:main": "rm -rf dist && npm run build:tsc && rollup -c rollup.config.ts",
+    "build:plugins": "rollup -c rollup.config.ts --plugins",
+    "build": "npm run build:main && npm run build:plugins",
     "start": "rollup -c rollup.config.ts -w",
     "precommit": "lint-staged",
     "docs": "yfm -i ./docs -o ./dist/docs --allowHTML"

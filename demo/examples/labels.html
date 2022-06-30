@@ -1,0 +1,380 @@
+<html>
+    <head>
+        <title>Yagr</title>
+        <script src="../../dist/yagr.iife.js"></script>
+        <script src="../../dist/plugins/yagr.labels.js"></script>
+        <script src="../../dist/plugins/yagr.weekends.js"></script>
+        <link rel="stylesheet" href="../../dist/index.css" />
+        <link rel="stylesheet" href="../../dist/plugins/yagr.labels.min.css" />
+        <style>
+            .container {
+                margin-bottom: 26px;
+                height: 350px;
+                width: 90%;
+            }
+            .grid {
+                height: 350px;
+                display: flex;
+                width: 90%;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .wow {
+                background-color: blue !important;
+            }
+
+            .whee {
+                background-color: blueviolet;
+                width: 18px !important;
+                height: 18px !important;
+                animation: rainbow-bg 1.5s linear;
+		        animation-iteration-count: infinite;
+            }
+
+            @keyframes rainbow-bg{
+                100%,0%{
+                    background-color: rgb(255,0,0);
+                }
+                8%{
+                    background-color: rgb(255,127,0);
+                }
+                16%{
+                    background-color: rgb(255,255,0);
+                }
+                25%{
+                    background-color: rgb(127,255,0);
+                }
+                33%{
+                    background-color: rgb(0,255,0);
+                }
+                41%{
+                    background-color: rgb(0,255,127);
+                }
+                50%{
+                    background-color: rgb(0,255,255);
+                }
+                58%{
+                    background-color: rgb(0,127,255);
+                }
+                66%{
+                    background-color: rgb(0,0,255);
+                }
+                75%{
+                    background-color: rgb(127,0,255);
+                }
+                83%{
+                    background-color: rgb(255,0,255);
+                }
+                91%{
+                    background-color: rgb(255,0,127);
+                }
+            }
+            
+
+        </style>
+    </head>
+    <body>
+        <div class="grid">
+            <div id="chart1" class="container"></div>
+        </div>
+        <div class="grid">
+            <div id="chart2" class="container"></div>
+        </div>
+        <div class="grid">
+            <div id="chart3" class="container"></div>
+        </div>
+        <div class="grid">
+            <div id="chart4" class="container"></div>
+        </div>
+        <div class="grid">
+            <div id="chart5" class="container"></div>
+        </div>
+        <div class="grid">
+            <div id="chart6" class="container"></div>
+        </div>
+        <div class="grid">
+            <div id="chart7" class="container"></div>
+        </div>
+        <div class="grid">
+            <div id="chart8" class="container"></div>
+        </div>
+        <div class="grid">
+            <div id="chart9" class="container"></div>
+        </div>
+        <div class="grid">
+            <div id="chart10" class="container"></div>
+        </div>
+   
+    <script>
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        const y1 = new Yagr(chart1, {
+            title: {
+                text: 'By scale, constant'
+            },
+            timeline: new Array(20).fill().map((_, i) => i * 1000),
+            series: [{data: new Array(20).fill().map((_, i) => Math.random() * 6), color: 'red'}],
+            axes: {
+                y: {precision: 0}
+            },
+            scales: {y: {min: 0, max: 6}},
+            plugins: [YagrLabels({
+                scales: {
+                    constant: {y: {}},
+                }
+            })]
+        });
+
+        const y2 = new Yagr(chart2, {
+            title: {
+                text: 'By scale, cursor'
+            },
+            timeline: new Array(20).fill().map((_, i) => i * 1000),
+            series: [{data: new Array(20).fill().map((_, i) => Math.random() * 6), color: 'red'}],
+            axes: {
+                y: {precision: 0}
+            },
+            scales: {y: {min: 0, max: 6}},
+            plugins: [YagrLabels({
+                scales: {
+                    cursor: {
+                        y: {}
+                    }
+                }
+            })]
+        });
+
+        const y3 = new Yagr(chart3, {
+            title: {
+                text: 'By series, constant'
+            },
+            timeline: new Array(20).fill().map((_, i) => i * 1000),
+            series: [
+                {data: new Array(20).fill().map((_, i) => Math.random() * 6), color: 'red'},
+                {data: new Array(20).fill().map((_, i) => Math.random() * 6), color: 'green', id: 'green'}
+            ],
+            axes: {
+                y: {precision: 0}
+            },
+            scales: {y: {min: 0, max: 6}},
+            plugins: [YagrLabels({
+                series: {
+                    constant: {green: {}},
+                }
+            })]
+        });
+
+        const y4 = new Yagr(chart4, {
+            title: {
+                text: 'By series, cursor'
+            },
+            timeline: new Array(20).fill().map((_, i) => i * 1000),
+            series: [
+                {data: new Array(20).fill().map((_, i) => Math.random() * 6), color: 'red'},
+                {data: new Array(20).fill().map((_, i) => Math.random() * 6), color: 'green', id: 'green'}
+            ],
+            axes: {
+                y: {precision: 0}
+            },
+            scales: {y: {min: 0, max: 6}},
+            plugins: [YagrLabels({
+                series: {
+                    cursor: {
+                        green: {}
+                    }
+                }
+            })]
+        });
+
+        const y5 = new Yagr(chart5, {
+            title: {
+                text: 'By series, focus'
+            },
+            timeline: new Array(20).fill().map((_, i) => i * 1000),
+            series: [
+                {data: new Array(20).fill().map((_, i) => Math.random() * 6), color: 'red'},
+                {data: new Array(20).fill().map((_, i) => Math.random() * 6), color: 'green', id: 'green'}
+            ],
+            axes: {
+                y: {precision: 0}
+            },
+            scales: {y: {min: 0, max: 6}},
+            plugins: [YagrLabels({
+                series: {
+                    focus: {
+                        green: {}
+                    }
+                }
+            })]
+        });
+
+        const y6 = new Yagr(chart6, {
+            title: {
+                text: 'Mixed'
+            },
+            timeline: new Array(20).fill().map((_, i) => i * 1000),
+            series: [
+                {data: new Array(20).fill().map((_, i) => Math.random() * 6), color: 'orange', id: 'orange'},
+                {data: new Array(20).fill().map((_, i) => Math.random() * 6), color: 'red', id: 'red'},
+                {data: new Array(20).fill().map((_, i) => Math.random() * 6), color: 'green', id: 'green'}
+            ],
+            axes: {
+                y: {precision: 0}
+            },
+            scales: {y: {min: 0, max: 6}},
+            plugins: [YagrLabels({
+                series: {
+                    focus: {
+                        green: {}
+                    },
+                    cursor: {
+                        orange: {},
+                    },
+                    constant: {
+                        red: {},
+                    }
+                }
+            })]
+        });
+
+        const y7 = new Yagr(chart7, {
+            title: {
+                text: 'By series, show in tooltip'
+            },
+            timeline: new Array(20).fill().map((_, i) => i * 1000),
+            series: [
+                {data: new Array(20).fill().map((_, i) => Math.random() * 6), color: 'red', id: 'red'},
+                {data: new Array(20).fill().map((_, i) => Math.random() * 6), color: 'green', id: 'green'}
+            ],
+            axes: {
+                y: {precision: 0}
+            },
+            scales: {y: {min: 0, max: 6}},
+            tooltip: {
+                render: (data) => {
+                    const appendidx = `<div>${y7.plugins.labels.getTextLabels().map((x) => {
+                        const s = y7.uplot.series[x.idx];
+                        return `<div><b>${s.id} = ${x.label}</b></div>`
+                    }).join('<br>')}</div>`;
+                    return `${data.defaultRender(data)}<br>${appendidx}`;
+                }
+            },
+            plugins: {
+                weekends: YagrWeekends(),
+                labels: YagrLabels({
+                    series: {
+                        cursor: {
+                            green: {show: false},
+                        }
+                    }
+                }
+            )}
+        });
+
+        const y8 = new Yagr(chart8, {
+            timeline: new Array(20).fill().map((_, i) => i * 1000),
+            series: [{data: new Array(20).fill().map((_, i) => Math.random() * 6), color: 'red'}],
+            axes: {
+                x: {plotLines: [
+                    {color: 'rgba(255, 200, 10, 0.3)', value: [2000, 5000], label: 'Woah'},
+                    {color: 'rgba(100, 200, 103, 0.3)', value: [10000, 15000], label: 'Wheee'}]}
+            },
+            scales: {y: {min: 0, max: 6}},
+            plugins: [YagrLabels({
+                plotLines: {
+                    constant: {
+                        x: {},
+                    }
+                }
+            })]
+        });
+
+        const y9 = new Yagr(chart9, {
+            timeline: new Array(20).fill().map((_, i) => i * 1000),
+            series: [{data: new Array(20).fill().map((_, i) => Math.random() * 6), color: 'red'}],
+            scales: {y: {min: 0, max: 6}},
+            tooltip: {
+                render: (data) => {
+                    const appendidx = `<div>${y9.plugins.labels.getAxisPoints().map(({scale, title}) => {
+                        return `<div>Scale = <b>${scale}</b>, title = ${title}</div>`
+                    }).join('<br>')}</div>`;
+                    return `${data.defaultRender(data)}<br>${appendidx}`;
+                }
+            },
+            plugins: {
+                labels: YagrLabels({
+                    axes: {
+                        x: [{
+                            value: 5000,
+                            className: 'wow',
+                            title: 'WOW'
+                        }, {
+                            value: 10000,
+                            className: 'whee',
+                            title: 'WHEE'
+                        }]
+                    }
+                })
+            }
+        });
+
+        const timeline = new Array(500).fill().map((_, i) => {
+            return Date.now() + i * 3600000
+        });
+        let r = 1;
+        const y10 = new Yagr(chart10, {
+            chart: {
+                series: {
+                    type: 'area'
+                },
+                appereance: {
+                    drawOrder: ['plotLines', 'series', 'axes'],
+                }
+            },
+            timeline: timeline,
+            series: new Array(4).fill().map((_, e) => {
+                return {data: new Array(500).fill().map((_, i) =>{
+                    return i % 77 ? (i % 77) * Math.random() * (e + 1) : 0
+                }), color: getRandomColor()}
+            }),
+            tooltip: {
+                render: (data) => {
+                    const appendidx = `<div>${y10.plugins.labels.getTextLabels().map((x) => {
+                        return `<div style="background-color:${x.band.color}">${x.label}</div>`
+                    }).join('<br>')}</div>`;
+                    return `${data.defaultRender(data)}<br>${appendidx}`;
+                }
+            },
+            axes: {
+                y: {
+                    stacking: true
+                },
+                x: {plotLines: timeline.map((_, i) => {
+                    return i % 77 === 0 ? {
+                        color: 'rgba(255, 10, 10, 0.3)',
+                        label: 'Release (' + r++ + ')',
+                        value: [timeline[i], timeline[i + 10]]
+                    } : null
+                }).filter(Boolean)}
+            },
+            plugins: {
+                weekends: YagrWeekends({}),
+                labels: YagrLabels({
+                    plotLines: {
+                        cursor: {
+                            x: {show: false},
+                        }
+                    }
+                }
+            )}
+        });
+    </script>
+    </body>
+</html>

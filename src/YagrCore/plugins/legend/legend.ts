@@ -2,6 +2,7 @@ import UPlot, {Options, Series} from 'uplot';
 
 import Yagr from '../../index';
 import {DEFAULT_X_SERIE_NAME} from '../../defaults';
+import {html} from '../..//utils/common';
 
 export type LegendPosition = 'top' | 'bottom';
 export interface LegendOptions {
@@ -192,13 +193,9 @@ export default class Legend {
         }
 
         const wrapEl = u.root.querySelector('.u-wrap') as HTMLElement;
-        const legendEl = document.createElement('div');
-
-        legendEl.classList.add('yagr-legend');
-
-        if (options?.className) {
-            legendEl.classList.add(options?.className);
-        }
+        const legendEl = html('div', {
+            class: `yagr-legend ${options?.className || ''}`,
+        });
 
         if (options?.position) {
             u.root.classList.add('yagr-legend_' + options?.position);
@@ -237,12 +234,17 @@ export default class Legend {
         });
     }
 
-    private measureLegend = (html: string) => {
+    private measureLegend = (body: string) => {
         const rootEl = this.yagr.root;
-        const pseudo = document.createElement('div');
-        pseudo.classList.add('yagr-legend');
-        pseudo.innerHTML = html;
-        pseudo.style.visibility = 'hidden';
+        const pseudo = html(
+            'div',
+            {
+                class: 'yagr-legend',
+                style: {visibility: 'hidden'},
+            },
+            body,
+        );
+
         rootEl.appendChild(pseudo);
 
         const items = pseudo.childNodes[0] as HTMLElement;
@@ -284,8 +286,9 @@ export default class Legend {
             nextPage.removeEventListener('click', this.nextPage);
             prevPage.removeEventListener('click', this.prevPage);
         } else {
-            pagination = document.createElement('div');
-            pagination.classList.add('yagr-legend__pagination');
+            pagination = html('div', {
+                class: 'yagr-legend__pagination',
+            });
         }
 
         const upClassName = state.page === 0 ? 'yagr-legend__icon-up_disabled' : '';
@@ -309,17 +312,16 @@ export default class Legend {
     }
 
     private createIconLineElement(serie: Series) {
-        const iconLineElement = document.createElement('span');
-
-        iconLineElement.classList.add('yagr-legend__icon', `yagr-legend__icon_${serie.type}`);
-        iconLineElement.style.backgroundColor = serie.color;
+        const iconLineElement = html('span', {
+            class: `yagr-legend__icon yagr-legend__icon_${serie.type}`,
+            style: {backgroundColor: serie.color},
+        });
 
         return iconLineElement;
     }
 
     private createSerieNameElement(serie: Series) {
-        const serieNameElement = document.createElement('span');
-
+        const serieNameElement = html('span');
         serieNameElement.innerText = serie.name || 'unnamed';
 
         return serieNameElement;

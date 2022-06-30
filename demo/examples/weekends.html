@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title>Yagr</title>
+        <script src="../../dist/yagr.iife.js"></script>
+        <script src="../../dist/plugins/yagr.weekends.js"></script>
+        <link rel="stylesheet" href="../../dist/index.css" />
+        <style>
+            .container {
+                margin-bottom: 26px;
+                height: 350px;
+                width: 100%;
+            }
+            .grid {
+                height: 350px;
+                display: flex;
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="grid">
+            <div id="chart1" class="container"></div>
+        </div>  
+    <script>
+        const y1 = new Yagr(chart1, {
+            timeline: new Array(500).fill().map((_, i) => i * 1500000),
+            series: [{data: new Array(500).fill().map((_, i) => Math.random() * 6), color: 'red'}],
+            scales: {y: {min: 0, max: 6}},
+            chart: {
+                appereance: {
+                    drawOrder: ['plotLines', 'series', 'axes']
+                }
+            },
+            plugins: [YagrWeekends()],
+        });
+    </script>
+    </body>
+</html>

@@ -1,3 +1,5 @@
+import {px} from '../../utils/common';
+
 const NAMES = {
     size: ['height', 'width'],
     clientSize: ['clientHeight', 'clientWidth'],
@@ -117,7 +119,7 @@ export default function (
     const styledSecondaryMaxSize = parseInt(elemStyle[secondary.maxSize], 10);
 
     if (!styledSecondaryMaxSize || secondaryMaxSize < styledSecondaryMaxSize) {
-        elem.style[secondary.maxSize] = secondaryMaxSize + 'px';
+        elem.style[secondary.maxSize] = px(secondaryMaxSize);
     }
 
     // Calculate the available room on either side of the anchor element. If
@@ -140,7 +142,7 @@ export default function (
     const styledPrimaryMaxSize = parseInt(elemStyle[primary.maxSize], 10);
 
     if (!styledPrimaryMaxSize || primaryMaxSize < styledPrimaryMaxSize) {
-        elem.style[primary.maxSize] = primaryMaxSize + 'px';
+        elem.style[primary.maxSize] = px(primaryMaxSize);
     }
 
     // Set the position of the popup element along the primary axis using the
@@ -172,15 +174,16 @@ export default function (
         elem.style[primary.after] = 'auto';
     } else {
         // bottom or right
-        elem.style[primary.before] = scrollOffset + boundPrimaryPos(anchorRect[primary.after]) + offset + 'px';
+        elem.style[primary.before] = px(scrollOffset + boundPrimaryPos(anchorRect[primary.after]) + offset);
         elem.style[primary.after] = 'auto';
     }
 
     // Set the position of the popup element along the secondary axis.
     const secondaryScrollOffset = window[secondary.scrollOffset] as unknown as number;
 
-    elem.style[secondary.before] =
-        secondaryScrollOffset + boundSecondaryPos(anchorRect[secondary.before] - secondaryMarginBefore) + 'px';
+    elem.style[secondary.before] = px(
+        secondaryScrollOffset + boundSecondaryPos(anchorRect[secondary.before] - secondaryMarginBefore),
+    );
     elem.style[secondary.after] = 'auto';
 
     elem.dataset.side = side;

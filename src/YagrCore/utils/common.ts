@@ -377,3 +377,31 @@ export const assignKeys = <T>(keys: (keyof T)[], f: T, t: T) => {
         }
     });
 };
+
+export const px = (x: number) => x + 'px';
+export const html = (
+    tag: string,
+    attrs: Record<string, string | Record<string, string>> = {},
+    content?: string | HTMLElement,
+) => {
+    const el = document.createElement(tag);
+    Object.keys(attrs).forEach((key) => {
+        const attr = attrs[key];
+        el.setAttribute(
+            key,
+            typeof attr === 'object'
+                ? Object.entries(attr)
+                      .map(([a, b]) => `${a}:${b}`)
+                      .join(';')
+                : attr,
+        );
+    });
+    if (content) {
+        if (typeof content === 'string') {
+            el.innerHTML = content;
+        } else {
+            el.appendChild(content);
+        }
+    }
+    return el;
+};

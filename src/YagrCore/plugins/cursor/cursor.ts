@@ -3,7 +3,7 @@ import UPlot, {Plugin, Series} from 'uplot';
 
 import {CURSOR_STYLE, DEFAULT_X_SCALE, MARKER_DIAMETER, SERIE_COLOR} from '../../defaults';
 import CP from '../../utils/colors';
-import {findDataIdx} from '../../utils/common';
+import {findDataIdx, html} from '../../utils/common';
 import type Yagr from '../..';
 
 /**
@@ -92,18 +92,21 @@ export default function CursorPlugin(
      */
     function cursorPoint(u: UPlot, seriesIndex: number) {
         const serie = u.series[seriesIndex];
-        const pt = document.createElement('div');
+        const span = html('span');
+        const pt = html(
+            'div',
+            {
+                class: 'yagr-point',
+                'data-idx': String(seriesIndex),
+            },
+            serie.empty ? undefined : span,
+        );
 
         // @TODO possibly not to render at all. Requires PR into uPlot
         if (serie.empty) {
             pt.style.display = 'none';
             return pt;
         }
-
-        const span = document.createElement('span');
-        pt.appendChild(span);
-        pt.classList.add('yagr-point');
-        pt.setAttribute('data-idx', String(seriesIndex));
 
         paintCursorPoint(serie, pt, span);
 

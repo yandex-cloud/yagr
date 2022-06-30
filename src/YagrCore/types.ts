@@ -40,6 +40,10 @@ declare module 'uplot' {
         /** Is series data transformd */
         _transformed?: boolean;
     }
+
+    interface Axis {
+        getFormatter?: (range: number) => (value: number) => string;
+    }
 }
 
 /**

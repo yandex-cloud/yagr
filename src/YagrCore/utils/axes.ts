@@ -69,23 +69,28 @@ const dateTimeFormatter = uPlot.fmtDate('{HH}:{mm}:{ss}');
 const minuteFormatter = uPlot.fmtDate('{mm}:{ss}');
 const secondFormatter = uPlot.fmtDate('{mm}:{ss}.{fff}');
 
+function getTimeFormatterByRange(rangeMs: number) {
+    let formatter = dayTimeFormatter;
+    if (rangeMs <= defaults.SECOND) {
+        formatter = secondFormatter;
+    } else if (rangeMs <= defaults.MINUTE) {
+        formatter = minuteFormatter;
+    } else if (rangeMs <= defaults.DAY) {
+        formatter = dateTimeFormatter;
+    }
+
+    return (x: number) => formatter(new Date(x));
+}
+
 export const getTimeFormatter = (config: YagrConfig) => {
     const msm = config.chart.timeMultiplier || 1;
     return (_: unknown, ticks: number[]) => {
         const range = ticks[ticks.length - 1] - ticks[0];
         const rangeMs = range / msm;
-
-        let formatter = dayTimeFormatter;
-        if (rangeMs <= defaults.SECOND) {
-            formatter = secondFormatter;
-        } else if (rangeMs <= defaults.MINUTE) {
-            formatter = minuteFormatter;
-        } else if (rangeMs <= defaults.DAY) {
-            formatter = dateTimeFormatter;
-        }
+        const formatter = getTimeFormatterByRange(rangeMs);
 
         return ticks.map((rawValue) => {
-            return formatter(new Date(rawValue / msm));
+            return formatter(rawValue / msm);
         });
     };
 };
@@ -127,6 +132,7 @@ function getAxis(axisConfig: AxisOptions, yagr: Yagr): Axis {
 
     if (axisConfig.scale === defaults.DEFAULT_X_SCALE) {
         return Object.assign(axis, {
+            getFormatter: getTimeFormatterByRange,
             gap: axisConfig.gap ?? defaults.X_AXIS_TICK_GAP,
             size: axisConfig.size || (() => defaults.X_AXIS_SIZE),
             values: axisConfig.values || getTimeFormatter(config),
@@ -144,6 +150,11 @@ function getAxis(axisConfig: AxisOptions, yagr: Yagr): Axis {
         size: axisConfig.size || defaults.Y_AXIS_SIZE,
         values: axisConfig.values || getNumericValueFormatter(axisConfig),
         scale: axisConfig.scale || defaults.DEFAULT_Y_SCALE,
+        getFormatter: () =>
+            getDefaultNumberFormatter(
+                typeof axisConfig.precision === 'number' ? axisConfig.precision : axisConfig.precision || 'auto',
+                '',
+            ),
         ...getAxisPositioning(axisConfig.side || 'left', axisConfig.align),
     });
 
